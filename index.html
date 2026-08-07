@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+<title>Did you snore? 😼</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800;900&family=Nunito:wght@400;600;700;800&display=swap');
+
+  :root {
+    --bg-1: #ffe3ee;
+    --bg-2: #e2f7ff;
+    --bg-3: #fff3d9;
+    --text: #3a2e42;
+    --sub: #6b5b73;
+    --yes-1: #57e0b0;
+    --yes-2: #22c497;
+    --no-1: #ffb3c6;
+    --no-2: #ff8fab;
+    --card-bg: #ffffffd9;
+    --shadow: 0 10px 30px rgba(60, 40, 70, 0.18);
+    --radius: 999px;
+    color-scheme: light;
+  }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  body {
+    position: fixed;
+    inset: 0;
+    font-family: 'Nunito', 'Poppins', ui-rounded, 'SF Pro Rounded', system-ui, -apple-system, sans-serif;
+    background: linear-gradient(160deg, var(--bg-1) 0%, var(--bg-2) 55%, var(--bg-3) 100%);
+    color: var(--text);
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+  }
+
+  /* ---------- Full-screen background emoji shower ---------- */
+  .emoji-shower {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .emoji-particle {
+    position: absolute;
+    top: 0;
+    will-change: transform, opacity;
+    animation-name: emojiFall;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.08));
+  }
+
+  @keyframes emojiFall {
+    0%   { transform: translateY(-12vh) translateX(0) rotate(0deg);   opacity: 0; }
+    8%   { opacity: 0.9; }
+    88%  { opacity: 0.9; }
+    100% { transform: translateY(112vh) translateX(var(--drift, 0px)) rotate(var(--spin, 220deg)); opacity: 0; }
+  }
+
+  /* ---------- App shell ---------- */
+  .app {
+    position: relative;
+    z-index: 1;
+    width: 100vw;
+    height: 100dvh;
+    height: 100svh;
+    overflow: hidden;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  }
+
+  /* ---------- Scenes ---------- */
+  .scene {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 6vh 6vw;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(14px) scale(0.96);
+    pointer-events: none;
+    transition: opacity 0.45s cubic-bezier(.2,.9,.25,1.15), transform 0.45s cubic-bezier(.2,.9,.25,1.15);
+  }
+
+  .scene.active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+
+  .title {
+    font-family: 'Poppins', 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: clamp(1.4rem, 6.6vw, 2.1rem);
+    margin: 0 0 1.8rem;
+    letter-spacing: -0.02em;
+    line-height: 1.28;
+    max-width: 26rem;
+  }
+
+  /* ---------- Buttons ---------- */
+  .button-row {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .btn {
+    font-family: 'Poppins', 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: clamp(0.95rem, 4.4vw, 1.15rem);
+    border: none;
+    border-radius: var(--radius);
+    padding: 1rem 1.8rem;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .btn:active { transform: scale(0.94); }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--yes-1), var(--yes-2));
+    color: #073b2e;
+    flex: 1;
+    min-width: 130px;
+  }
+
+  .btn-evasive {
+    background: linear-gradient(135deg, var(--no-1), var(--no-2));
+    color: #5c1330;
+    flex: 1;
+    min-width: 110px;
+    z-index: 50;
+  }
+
+  .btn-evasive.dodging {
+    position: fixed;
+    margin: 0;
+    transition: left 0.16s cubic-bezier(.2,.9,.3,1.3), top 0.16s cubic-bezier(.2,.9,.3,1.3), transform 0.15s ease;
+  }
+
+  .btn-next {
+    background: linear-gradient(135deg, #6ec6ff, #3fa9f5);
+    color: #062b47;
+    margin-top: 2.2rem;
+    padding: 0.9rem 2.4rem;
+  }
+
+  .btn-replay {
+    background: linear-gradient(135deg, #ffd166, #ffb454);
+    color: #4a2e02;
+    margin-top: 1.8rem;
+    padding: 0.9rem 2.4rem;
+  }
+
+  .stack-buttons {
+    flex-direction: column;
+    max-width: 320px;
+  }
+  .stack-buttons .btn { width: 100%; }
+
+  /* ---------- Iris-tracking eyes overlaid on the scene 6 cat gif ---------- */
+  .cat-eye {
+    position: absolute;
+    width: 0;
+    height: 0;
+    z-index: 2;
+  }
+
+  .cat-pupil {
+    position: absolute;
+    width: 11px;
+    height: 11px;
+    margin: -5.5px 0 0 -5.5px;
+    border-radius: 50%;
+    background: #17130d;
+    transition: transform 0.12s ease-out;
+    will-change: transform;
+  }
+
+  .cat-pupil::after {
+    content: '';
+    position: absolute;
+    top: 14%;
+    left: 52%;
+    width: 34%;
+    height: 34%;
+    border-radius: 50%;
+    background: #fff;
+    opacity: 0.8;
+  }
+
+  /* ---------- Meme visual ---------- */
+  .meme-visual {
+    position: relative;
+    width: min(74vw, 300px);
+    aspect-ratio: 1 / 1;
+    margin-bottom: 0.6rem;
+  }
+
+  .meme-visual.compact {
+    width: min(52vw, 210px);
+  }
+
+  .meme-gif {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 26px;
+    box-shadow: var(--shadow);
+    border: 6px solid #ffffffcc;
+    background: #fff;
+    animation: pop-bounce 0.6s cubic-bezier(.2,.9,.3,1.4) both, bob 2.4s ease-in-out 0.6s infinite;
+  }
+
+  .meme-fallback {
+    display: none;
+    width: 100%;
+    height: 100%;
+    border-radius: 26px;
+    align-items: center;
+    justify-content: center;
+    font-size: 4.2rem;
+    background: linear-gradient(135deg, #fff0f6, #eafaf1);
+    box-shadow: var(--shadow);
+    border: 6px solid #ffffffcc;
+    animation: pop-bounce 0.6s cubic-bezier(.2,.9,.3,1.4) both;
+  }
+
+  @keyframes pop-bounce {
+    0% { opacity: 0; transform: translateY(24px) scale(0.7); }
+    60% { opacity: 1; transform: translateY(-6px) scale(1.06); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  @keyframes bob {
+    0%, 100% { transform: translateY(0) rotate(-1deg); }
+    50% { transform: translateY(-10px) rotate(1deg); }
+  }
+
+  .reaction-text {
+    font-family: 'Poppins', 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: clamp(1.2rem, 6vw, 1.6rem);
+    margin: 1.4rem 0 0;
+    color: #7a1740;
+    text-shadow: 0 2px 0 #fff, 0 5px 12px rgba(60,40,70,0.18);
+    line-height: 1.3;
+    max-width: 24rem;
+    animation: pop-bounce 0.6s 0.1s cubic-bezier(.2,.9,.3,1.4) both;
+  }
+
+  /* ---------- Summary screen ---------- */
+  .summary-card {
+    width: min(90vw, 380px);
+    background: var(--card-bg);
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+    padding: 1.6rem 1.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    text-align: left;
+  }
+
+  .summary-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px dashed #e2d5e8;
+  }
+  .summary-item:last-child { border-bottom: none; padding-bottom: 0; }
+
+  .summary-q {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--sub);
+  }
+
+  .summary-a {
+    font-weight: 800;
+    font-size: 1.05rem;
+    color: #22c497;
+  }
+
+  /* ---------- Ragebait tap bubble ---------- */
+  #rageLayer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 300;
+  }
+
+  .rage-bubble {
+    position: fixed;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 6px 18px rgba(60,40,70,0.35);
+    border: 3px solid #fff;
+    animation: rageFade 1.75s ease-out forwards;
+  }
+
+  @keyframes rageFade {
+    0%   { opacity: 0; transform: scale(0.4); }
+    14%  { opacity: 1; transform: scale(1.08); }
+    24%  { transform: scale(1); }
+    75%  { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(0.82); }
+  }
+
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="emoji-shower" id="emojiShower" aria-hidden="true"></div>
+<div id="rageLayer" aria-hidden="true"></div>
+
+<div class="app" id="app">
+
+  <!-- Scene 1: Question 1 -->
+  <div class="scene active" id="q1" data-emojis="😴,💤,🛌">
+    <div class="meme-visual compact">
+      <img class="meme-gif" alt="Sleepy droopy-eyed cat meme" loading="lazy"
+        src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaThkMnVkbXFkcDUwajZzb2Nubmt2MGU3YzR0cXVrYmd2Y3V5bGV5NCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/vBTxCPUwfC6ddBsTbs/giphy.gif">
+      <div class="meme-fallback">😴</div>
+    </div>
+    <h1 class="title">Asyikin! Do you always snore like how you snored in my baby saga?</h1>
+    <div class="button-row">
+      <button class="btn btn-primary" type="button" data-next="r2">Yes</button>
+      <button class="btn btn-evasive" type="button" id="noBtn1">No</button>
+    </div>
+  </div>
+
+  <!-- Scene 2: Reaction -->
+  <div class="scene" id="r2" data-emojis="😴,💤,👉">
+    <div class="meme-visual">
+      <img class="meme-gif" alt="Snoring cat meme" loading="lazy"
+        src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3ajByaXo1aDI5aXY5dGhzNzhqbDU0dHNiZXUzM295aTFvZTJsMXVvOCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Iy1PWGPb7Hz3AI4e3T/giphy.gif">
+      <div class="meme-fallback">😴</div>
+    </div>
+    <p class="reaction-text">YOU SNORING BABY! 👉</p>
+    <button class="btn btn-next" type="button" data-next="r3">Next</button>
+  </div>
+
+  <!-- Scene 3: Reaction -->
+  <div class="scene" id="r3" data-emojis="😱,🤯,😲">
+    <div class="meme-visual">
+      <img class="meme-gif" alt="Shocked reaction meme" loading="lazy"
+        src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3b2I4OWFlbHkzbWNsd20xaXFvanBpd2x5NGRkZ3U4NWxyZmE3bGphaSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/hzzVv0SMDjyyVVtlnb/giphy.gif">
+      <div class="meme-fallback">😱</div>
+    </div>
+    <p class="reaction-text">I can't believe you just admitted that OMGGG</p>
+    <button class="btn btn-next" type="button" data-next="r4">Next</button>
+  </div>
+
+  <!-- Scene 4: Reaction -->
+  <div class="scene" id="r4" data-emojis="😌,😎,✌️">
+    <div class="meme-visual">
+      <img class="meme-gif" alt="Smug relieved meme" loading="lazy"
+        src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdDduOTBob2ZoNjNwbTVzZHFybzNwOXAxdHQzNHNoaGc4MDlhaDQ4biZlcD12MV9naWZzX3NlYXJjaCZjdD1n/12d71hRlD9T2Cc/giphy.gif">
+      <div class="meme-fallback">😌</div>
+    </div>
+    <p class="reaction-text">I feel good neow that you actually admitted it, you may go neow</p>
+    <button class="btn btn-next" type="button" data-next="r5">Next</button>
+  </div>
+
+  <!-- Scene 5: Reaction -->
+  <div class="scene" id="r5" data-emojis="✋,⏸️,❓">
+    <div class="meme-visual">
+      <img class="meme-gif" alt="Wait a minute dramatic meme" loading="lazy"
+        src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaThkMnVkbXFkcDUwajZzb2Nubmt2MGU3YzR0cXVrYmd2Y3V5bGV5NCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/5T3uYeKr1PE6xhfNcX/giphy.gif">
+      <div class="meme-fallback">🤨</div>
+    </div>
+    <p class="reaction-text">wait wait waittt, I have another question before you goo...</p>
+    <button class="btn btn-next" type="button" data-next="q2">Next</button>
+  </div>
+
+  <!-- Scene 6: Question 2 -->
+  <div class="scene" id="q2" data-emojis="👻,😱,🕯️">
+    <div class="meme-visual compact" id="q2MemeVisual">
+      <img class="meme-gif" alt="Cute cat meme with tracking eyes" loading="lazy" id="q2Gif"
+        src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3aDA3Y2I1MWxramx0bnF3ajZuZjR1MTNsOHExcnJla244bHB2OXZvMyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/9XanOznJWDZU8e122R/giphy.gif">
+      <div class="meme-fallback">🐱</div>
+      <div class="cat-eye" id="catEyeL" style="left:38%;top:52%"><div class="cat-pupil" id="pupilL"></div></div>
+      <div class="cat-eye" id="catEyeR" style="left:61%;top:51%"><div class="cat-pupil" id="pupilR"></div></div>
+    </div>
+    <h1 class="title">Asyikin did you really think I was scared at that ghost house?</h1>
+    <div class="button-row stack-buttons">
+      <button class="btn btn-evasive" type="button" id="scaredyBtn">(yeah Rashdan is a scaredy cat)</button>
+      <button class="btn btn-primary" type="button" data-next="r7">(nope Rashdan was being protective, Asyikin felt safe)</button>
+    </div>
+  </div>
+
+  <!-- Scene 7: Reaction -->
+  <div class="scene" id="r7" data-emojis="🤭,✨,🙈">
+    <div class="meme-visual">
+      <img class="meme-gif" alt="Cute blushing meme" loading="lazy"
+        src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaThkMnVkbXFkcDUwajZzb2Nubmt2MGU3YzR0cXVrYmd2Y3V5bGV5NCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/gSQp32H82WETR5EFO6/giphy.gif">
+      <div class="meme-fallback">🙈</div>
+    </div>
+    <p class="reaction-text">Hehehe, aww, I know I know, you dont need to point it out... you may go neow</p>
+    <button class="btn btn-next" type="button" data-next="summary">See Summary</button>
+  </div>
+
+  <!-- Scene 8: Summary -->
+  <div class="scene" id="summary" data-emojis="🎉,✨,🥳">
+    <h1 class="title">Summary of Your Answers 📋</h1>
+    <div class="summary-card">
+      <div class="summary-item">
+        <span class="summary-q">Q1: Do you snore?</span>
+        <span class="summary-a">Answered: YES!</span>
+      </div>
+      <div class="summary-item">
+        <span class="summary-q">Q2: Was Rashdan scared at the ghost house?</span>
+        <span class="summary-a">Answered: Nope! Rashdan was being protective, Asyikin felt safe!</span>
+      </div>
+    </div>
+    <button class="btn btn-replay" type="button" data-next="q1">Replay</button>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var app = document.getElementById('app');
+
+  // ================= Background emoji shower =================
+  var shower = document.getElementById('emojiShower');
+  var showerInterval = null;
+  var MAX_PARTICLES = 46;
+
+  function spawnParticle(pool) {
+    if (shower.children.length >= MAX_PARTICLES) return;
+    var el = document.createElement('div');
+    el.className = 'emoji-particle';
+    el.textContent = pool[(Math.random() * pool.length) | 0];
+    el.style.left = (Math.random() * 92) + 'vw';
+    var size = 1.3 + Math.random() * 1.4;
+    el.style.fontSize = size.toFixed(2) + 'rem';
+    var duration = 4.5 + Math.random() * 3.5;
+    el.style.animationDuration = duration.toFixed(2) + 's';
+    el.style.setProperty('--drift', ((Math.random() * 60) - 30).toFixed(0) + 'px');
+    el.style.setProperty('--spin', (Math.random() > 0.5 ? 1 : -1) * (180 + Math.random() * 180) + 'deg');
+    el.addEventListener('animationend', function () { el.remove(); });
+    shower.appendChild(el);
+  }
+
+  function startShower(pool) {
+    clearInterval(showerInterval);
+    if (!pool || !pool.length) return;
+    spawnParticle(pool);
+    showerInterval = setInterval(function () { spawnParticle(pool); }, 260);
+  }
+
+  function poolFor(scene) {
+    return (scene.dataset.emojis || '').split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+  }
+
+  // ================= Scene navigation =================
+  function goTo(targetId) {
+    var current = document.querySelector('.scene.active');
+    var target = document.getElementById(targetId);
+    if (!target || current === target) return;
+
+    if (targetId === 'q1') {
+      resetEvasive(noBtn1);
+      resetEvasive(scaredyBtn);
+    }
+
+    current.classList.remove('active');
+    target.classList.add('active');
+    startShower(poolFor(target));
+
+    if (targetId === 'q2') {
+      requestAnimationFrame(function () { updateEyes(); });
+    }
+  }
+
+  document.querySelectorAll('[data-next]').forEach(function (btn) {
+    btn.addEventListener('click', function () { goTo(btn.dataset.next); });
+  });
+
+  // ================= GIF fallback chain =================
+  function wireGifFallback(img, onExhausted) {
+    var list = (img.dataset.fallbacks || '').split(',').filter(Boolean);
+    img.addEventListener('error', function handler() {
+      if (list.length) {
+        img.src = list.shift();
+      } else {
+        img.style.display = 'none';
+        var fb = img.nextElementSibling;
+        if (fb && fb.classList.contains('meme-fallback')) fb.style.display = 'flex';
+        if (onExhausted) onExhausted();
+      }
+    });
+  }
+  document.querySelectorAll('.meme-gif').forEach(function (img) {
+    if (img.id === 'q2Gif') return; // wired separately below so it can also hide the eye overlay
+    wireGifFallback(img);
+  });
+  var q2Gif = document.getElementById('q2Gif');
+  wireGifFallback(q2Gif, function () {
+    document.getElementById('catEyeL').style.display = 'none';
+    document.getElementById('catEyeR').style.display = 'none';
+  });
+
+  // ================= Evasive buttons =================
+  var noBtn1 = document.getElementById('noBtn1');
+  var scaredyBtn = document.getElementById('scaredyBtn');
+
+  var evasiveButtons = [];
+  var rafPending = false;
+  var PROXIMITY_PX = 90;
+
+  // ---- ragebait tap bubble: fires wherever the user actually taps/clicks a dodging button ----
+  var RAGE_GIFS = [
+    'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExeGY0bnZtcjFlaHhuenRqdmRnb3Nzd25jY3E4Y3ZsaWp2NndqaWFpaSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/GRk3GLfzduq1NtfGt5/giphy.gif',
+    'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaThkMnVkbXFkcDUwajZzb2Nubmt2MGU3YzR0cXVrYmd2Y3V5bGV5NCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/BBNYBoYa5VwtO/giphy.gif',
+    'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaThkMnVkbXFkcDUwajZzb2Nubmt2MGU3YzR0cXVrYmd2Y3V5bGV5NCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/wr7oA0rSjnWuiLJOY5/giphy.gif',
+    'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaThkMnVkbXFkcDUwajZzb2Nubmt2MGU3YzR0cXVrYmd2Y3V5bGV5NCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/S0Nokl7V0t4mfoYkLF/giphy.gif',
+    'https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3MTJzNDJ6cmIybW12ZWQxYnJ5cG54YTJ5MDJsZjRhN2c1dTc5bTVweiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/iXbnkZTxCo4t8l8mxK/giphy.gif',
+    'https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3MTJzNDJ6cmIybW12ZWQxYnJ5cG54YTJ5MDJsZjRhN2c1dTc5bTVweiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/xgeRl0NFAhi7m8bm8J/giphy.gif',
+    'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaThkMnVkbXFkcDUwajZzb2Nubmt2MGU3YzR0cXVrYmd2Y3V5bGV5NCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/xun2qNfnK1cV5r07GM/giphy.gif'
+  ];
+  var rageLayer = document.getElementById('rageLayer');
+
+  function coordsFromEvent(evt) {
+    if (!evt) return null;
+    if (evt.changedTouches && evt.changedTouches.length) {
+      return { x: evt.changedTouches[0].clientX, y: evt.changedTouches[0].clientY };
+    }
+    if (evt.touches && evt.touches.length) {
+      return { x: evt.touches[0].clientX, y: evt.touches[0].clientY };
+    }
+    if (typeof evt.clientX === 'number') {
+      return { x: evt.clientX, y: evt.clientY };
+    }
+    return null;
+  }
+
+  function spawnRageBubble(x, y) {
+    var diameter = Math.max(64, Math.min(112, window.innerWidth * 0.24));
+    var left = Math.min(Math.max(x - diameter / 2, 4), window.innerWidth - diameter - 4);
+    var top = Math.min(Math.max(y - diameter / 2, 4), window.innerHeight - diameter - 4);
+
+    var bubble = document.createElement('img');
+    bubble.className = 'rage-bubble';
+    bubble.alt = '';
+    bubble.src = RAGE_GIFS[(Math.random() * RAGE_GIFS.length) | 0];
+    bubble.style.width = diameter + 'px';
+    bubble.style.height = diameter + 'px';
+    bubble.style.left = left + 'px';
+    bubble.style.top = top + 'px';
+    bubble.addEventListener('animationend', function () { bubble.remove(); });
+    bubble.addEventListener('error', function () { bubble.remove(); });
+    rageLayer.appendChild(bubble);
+  }
+
+  function maybeSpawnRageBubble(state, x, y) {
+    var now = performance.now();
+    if (now - (state.lastTap || 0) < 150) return; // dedupe pointerdown+touchstart firing for one physical tap
+    state.lastTap = now;
+    spawnRageBubble(x, y);
+  }
+
+  function safeBoundsFor(btn) {
+    var w = window.innerWidth;
+    var h = window.innerHeight;
+    var padding = 14;
+    var btnW = btn.offsetWidth;
+    var btnH = btn.offsetHeight;
+    var topInset = parseFloat(getComputedStyle(app).paddingTop) || 0;
+    var bottomInset = parseFloat(getComputedStyle(app).paddingBottom) || 0;
+    return {
+      minX: padding,
+      maxX: Math.max(padding, w - btnW - padding),
+      minY: h * 0.24 + topInset,
+      maxY: Math.max(h * 0.3, h - btnH - padding - bottomInset)
+    };
+  }
+
+  function isSceneActive(el) {
+    var scene = el.closest('.scene');
+    return scene && scene.classList.contains('active');
+  }
+
+  function makeEvasive(btn, onMove) {
+    var state = { btn: btn, isDodging: false, onMove: onMove || null };
+    evasiveButtons.push(state);
+
+    function arm() {
+      if (state.isDodging) return;
+      var rect = btn.getBoundingClientRect();
+      btn.style.width = rect.width + 'px';
+      btn.style.height = rect.height + 'px';
+      btn.style.left = rect.left + 'px';
+      btn.style.top = rect.top + 'px';
+      btn.classList.add('dodging');
+      // eslint-disable-next-line no-unused-expressions
+      btn.offsetHeight;
+      state.isDodging = true;
+    }
+
+    function move() {
+      arm();
+      var b = safeBoundsFor(btn);
+      var x = b.minX + Math.random() * (b.maxX - b.minX);
+      var y = b.minY + Math.random() * (b.maxY - b.minY);
+      btn.style.left = x + 'px';
+      btn.style.top = y + 'px';
+      if (state.onMove) state.onMove();
+    }
+
+    function dodgeHover(evt) {
+      if (!isSceneActive(btn)) return;
+      if (evt && evt.cancelable) evt.preventDefault();
+      move();
+    }
+
+    function dodgeTap(evt) {
+      if (!isSceneActive(btn)) return;
+      if (evt) {
+        if (evt.cancelable) evt.preventDefault();
+        evt.stopPropagation();
+      }
+      var coords = coordsFromEvent(evt);
+      move();
+      if (coords) maybeSpawnRageBubble(state, coords.x, coords.y);
+    }
+
+    ['pointerenter', 'pointerover', 'mouseover', 'mouseenter', 'focus']
+      .forEach(function (evtName) {
+        btn.addEventListener(evtName, dodgeHover, { passive: false });
+      });
+
+    ['pointerdown', 'touchstart', 'click']
+      .forEach(function (evtName) {
+        btn.addEventListener(evtName, dodgeTap, { passive: false });
+      });
+
+    state.move = move;
+    return state;
+  }
+
+  function resetEvasive(btn) {
+    btn.classList.remove('dodging');
+    btn.style.cssText = '';
+    var state = evasiveButtons.filter(function (s) { return s.btn === btn; })[0];
+    if (state) state.isDodging = false;
+  }
+
+  function proximityCheck(clientX, clientY) {
+    if (rafPending) return;
+    rafPending = true;
+    requestAnimationFrame(function () {
+      rafPending = false;
+      evasiveButtons.forEach(function (state) {
+        if (!isSceneActive(state.btn)) return;
+        var rect = state.btn.getBoundingClientRect();
+        var cx = rect.left + rect.width / 2;
+        var cy = rect.top + rect.height / 2;
+        var dist = Math.hypot(clientX - cx, clientY - cy);
+        if (dist < PROXIMITY_PX) state.move();
+      });
+    });
+  }
+
+  window.addEventListener('pointermove', function (e) { proximityCheck(e.clientX, e.clientY); }, { passive: true });
+  window.addEventListener('touchmove', function (e) {
+    if (e.touches && e.touches.length) proximityCheck(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: true });
+
+  window.addEventListener('resize', function () {
+    evasiveButtons.forEach(function (state) {
+      if (state.isDodging && isSceneActive(state.btn)) state.move();
+    });
+    if (isSceneActive(scaredyBtn)) updateEyes();
+  });
+
+  makeEvasive(noBtn1);
+  makeEvasive(scaredyBtn, updateEyes);
+
+  // ================= Iris-tracking eyes overlaid on the scene 6 cat gif =================
+  var pupilL = document.getElementById('pupilL');
+  var pupilR = document.getElementById('pupilR');
+  var eyeAnchorL = document.getElementById('catEyeL'); // pinned to the cat's actual eye position in the gif
+  var eyeAnchorR = document.getElementById('catEyeR');
+  var EYE_MOVE_RADIUS = 5; // px the pupil may drift inside the cat's eye
+
+  function pointPupil(anchor, pupil, targetX, targetY) {
+    var er = anchor.getBoundingClientRect(); // 0x0 element, so left/top IS the anchor point
+    var dx = targetX - er.left;
+    var dy = targetY - er.top;
+    var angle = Math.atan2(dy, dx);
+    var dist = Math.min(EYE_MOVE_RADIUS, Math.hypot(dx, dy));
+    var px = Math.cos(angle) * dist;
+    var py = Math.sin(angle) * dist;
+    pupil.style.transform = 'translate(' + px.toFixed(1) + 'px,' + py.toFixed(1) + 'px)';
+  }
+
+  function updateEyes() {
+    var rect = scaredyBtn.getBoundingClientRect();
+    var targetX = rect.left + rect.width / 2;
+    var targetY = rect.top + rect.height / 2;
+    pointPupil(eyeAnchorL, pupilL, targetX, targetY);
+    pointPupil(eyeAnchorR, pupilR, targetX, targetY);
+  }
+
+  // initial shower for the first scene
+  startShower(poolFor(document.getElementById('q1')));
+})();
+</script>
+
+</body>
+</html>
