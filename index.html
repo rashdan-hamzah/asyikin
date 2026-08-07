@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
-<title>ASYIKIN</title>
+<title>asyikin</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800;900&family=Nunito:wght@400;600;700;800&display=swap');
 
@@ -284,6 +284,16 @@
     width: min(52vw, 210px);
   }
 
+  #summary {
+    padding-top: 3vh;
+    padding-bottom: 3vh;
+  }
+
+  #summary .meme-visual {
+    width: min(36vw, 140px);
+    margin-bottom: 0.3rem;
+  }
+
   .meme-gif {
     width: 100%;
     height: 100%;
@@ -336,33 +346,33 @@
   .summary-card {
     width: min(90vw, 380px);
     background: var(--card-bg);
-    border-radius: 24px;
+    border-radius: 20px;
     box-shadow: var(--shadow);
-    padding: 1.6rem 1.4rem;
+    padding: 1.1rem 1.2rem;
     display: flex;
     flex-direction: column;
-    gap: 1.2rem;
+    gap: 0.7rem;
     text-align: left;
   }
 
   .summary-item {
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
-    padding-bottom: 1rem;
+    gap: 0.2rem;
+    padding-bottom: 0.6rem;
     border-bottom: 1px dashed #e2d5e8;
   }
   .summary-item:last-child { border-bottom: none; padding-bottom: 0; }
 
   .summary-q {
     font-weight: 700;
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     color: var(--sub);
   }
 
   .summary-a {
     font-weight: 800;
-    font-size: 1.05rem;
+    font-size: 0.95rem;
     color: #22c497;
   }
 
@@ -568,7 +578,6 @@
         src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaHhvOHg1M2htYzdiMGZ3eTlzMHR0dGYxc3NteWxuOWl4NHpvY2tmYSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/U8WkP83KzUPBxF8K0o/giphy.gif">
       <div class="meme-fallback">📋</div>
     </div>
-    <h1 class="title">Summary of Your Answers 📋</h1>
     <div class="summary-card">
       <div class="summary-item">
         <span class="summary-q">Q1: Do you snore?</span>
@@ -580,7 +589,7 @@
       </div>
       <div class="summary-item">
         <span class="summary-q">Q3: Can Rashdan keep bringing up the missed interview until Grandma Ashy?</span>
-        <span class="summary-a">Answered: YES! (even the "no" was secretly a yes 😏)</span>
+        <span class="summary-a">Answered: YES!</span>
       </div>
     </div>
     <button class="btn btn-replay" type="button" data-next="q1">Replay</button>
