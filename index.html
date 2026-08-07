@@ -182,6 +182,35 @@
   }
   .stack-buttons .btn { width: 100%; }
 
+  /* ---------- Shrinking button (scene 12) ---------- */
+  .grow-shrink {
+    transition: transform 0.35s cubic-bezier(.34,1.56,.64,1);
+  }
+
+  #shrinkYesBtn {
+    z-index: 3;
+  }
+
+  #shrinkNoBtn {
+    z-index: 2;
+  }
+
+  #shrinkRow {
+    max-width: 92vw;
+  }
+
+  .shake-reject {
+    animation: shakeReject 0.4s ease;
+  }
+
+  @keyframes shakeReject {
+    0%, 100% { translate: 0 0; }
+    20% { translate: -8px 0; }
+    40% { translate: 8px 0; }
+    60% { translate: -6px 0; }
+    80% { translate: 6px 0; }
+  }
+
   .btn-secondary {
     background: linear-gradient(135deg, var(--no-1), var(--no-2));
     color: #5c1330;
@@ -290,7 +319,7 @@
   }
 
   #summary .meme-visual {
-    width: min(36vw, 140px);
+    width: min(28vw, 108px);
     margin-bottom: 0.3rem;
   }
 
@@ -345,21 +374,23 @@
   /* ---------- Summary screen ---------- */
   .summary-card {
     width: min(90vw, 380px);
+    max-height: 48vh;
+    overflow-y: auto;
     background: var(--card-bg);
     border-radius: 20px;
     box-shadow: var(--shadow);
-    padding: 1.1rem 1.2rem;
+    padding: 0.9rem 1.1rem;
     display: flex;
     flex-direction: column;
-    gap: 0.7rem;
+    gap: 0.5rem;
     text-align: left;
   }
 
   .summary-item {
     display: flex;
     flex-direction: column;
-    gap: 0.2rem;
-    padding-bottom: 0.6rem;
+    gap: 0.15rem;
+    padding-bottom: 0.45rem;
     border-bottom: 1px dashed #e2d5e8;
   }
   .summary-item:last-child { border-bottom: none; padding-bottom: 0; }
@@ -374,6 +405,55 @@
     font-weight: 800;
     font-size: 0.95rem;
     color: #22c497;
+  }
+
+  /* ---------- Scene 16d countdown ---------- */
+  .countdown-text {
+    font-family: 'Nunito', 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: clamp(0.9rem, 3.8vw, 1.05rem);
+    color: var(--sub);
+    max-width: 22rem;
+    line-height: 1.4;
+    margin: -0.8rem 0 1.6rem;
+  }
+
+  .countdown-text strong { color: #7a1740; }
+
+  #q16dCountdownNum {
+    display: inline-block;
+    font-weight: 800;
+    color: #e0316b;
+  }
+
+  .countdown-text.urgent #q16dCountdownNum {
+    color: #ff2d55;
+    animation: pulseUrgent 0.5s ease-in-out infinite;
+  }
+
+  @keyframes pulseUrgent {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+  }
+
+  /* ---------- Full-screen ragebait gif overlay (scene 16d payoff) ---------- */
+  #gatalOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 400;
+    opacity: 0;
+    pointer-events: none;
+    background: #000;
+    transition: opacity 0.4s ease;
+  }
+
+  #gatalOverlay.show { opacity: 1; }
+
+  #gatalOverlay img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 
   /* ---------- Ragebait tap bubble ---------- */
@@ -408,6 +488,10 @@
 
 <div class="emoji-shower" id="emojiShower" aria-hidden="true"></div>
 <div id="rageLayer" aria-hidden="true"></div>
+<div id="gatalOverlay" aria-hidden="true">
+  <img id="gatalOverlayImg" alt=""
+    src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3NTNub3NsangzMG41aXNoZWVyd2ttbnlqemt5NzIxYjVoemJ3cDRraiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/n3CPaLVzMAtLw0byyw/giphy.gif">
+</div>
 
 <div class="app" id="app">
 
@@ -550,17 +634,129 @@
   </div>
 
   <!-- Scene 11: Reaction -->
-  <div class="scene" id="r11" data-emojis="🤣,💀,😂">
+  <!-- Scene 11: Reaction -->
+  <div class="scene" id="r11" data-emojis="😬,🙃,😅">
+    <div class="meme-visual">
+      <img class="meme-gif" alt="One more chance meme" loading="lazy"
+        src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3Z3lsNnlqanVuMjBkN3pzNms1a2k1b2hvdWM2M2ptb2swZXlva3l4MSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/qiMbLh4WHEZyw/giphy.gif">
+      <div class="meme-fallback">😬</div>
+    </div>
+    <p class="reaction-text">OMGG Asyikinnn I give you one more chance to recover your dumbness</p>
+    <button class="btn btn-next" type="button" data-next="q12">Next</button>
+  </div>
+
+  <!-- Scene 12: Question 5 (the shrinking button) -->
+  <div class="scene" id="q12" data-emojis="📱,😤,🙄">
+    <div class="meme-visual compact">
+      <img class="meme-gif" alt="No debate meme" loading="lazy"
+        src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbXpiMHJkNDN0aWdwNHphcW5yeTk0NTYxcmc0aXM1YWVud2Zpc3o5ZSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/GAXXHdS0zXawVLOJLY/giphy.gif">
+      <div class="meme-fallback">📱</div>
+    </div>
+    <h1 class="title">Asyikin will share her screen time whenever Rashdan asks, no debate</h1>
+    <div class="button-row" id="shrinkRow">
+      <button class="btn btn-primary grow-shrink" type="button" id="shrinkYesBtn" data-next="r13">Yes</button>
+      <button class="btn btn-evasive grow-shrink" type="button" id="shrinkNoBtn">No</button>
+    </div>
+  </div>
+
+  <!-- Scene 13: Reaction -->
+  <div class="scene" id="r13" data-emojis="😏,👑,🎮">
+    <div class="meme-visual">
+      <img class="meme-gif" alt="I will control your life meme" loading="lazy"
+        src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmY1azU4ZWhzdDlreWc2azc2aW5wMHU3MDVmZzliNHQ0bnF1NWRkMCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/3cAP6DJUOUvF9eJmsS/giphy.gif">
+      <div class="meme-fallback">😏</div>
+    </div>
+    <p class="reaction-text">Hehehe, I will control your life for sure....</p>
+    <button class="btn btn-next" type="button" data-next="r14">Next</button>
+  </div>
+
+  <!-- Scene 14: Reaction -->
+  <div class="scene" id="r14" data-emojis="🤣,💀,😂">
     <div class="meme-visual">
       <img class="meme-gif" alt="Gotcha laughing meme" loading="lazy"
         src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExczd2YnpucTBoZThqcHZzN2J1ZXBnMDgxaGMwbHY2enhubWxpM2JnaCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/0SVAVxeJsnJ1WRMIPX/giphy.gif">
       <div class="meme-fallback">🤣</div>
     </div>
-    <p class="reaction-text">Wait, I just got you 3 times in a row! OMGGG you dumba!</p>
+    <p class="reaction-text">Waitt, I just got you 4 times in a row! OMGGG you dumba!</p>
+    <button class="btn btn-next" type="button" data-next="r15">Next</button>
+  </div>
+
+  <!-- Scene 15: Reaction -->
+  <div class="scene" id="r15" data-emojis="🙏,😇,🎁">
+    <div class="meme-visual">
+      <img class="meme-gif" alt="One last chance meme" loading="lazy"
+        src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYml0cGlncnB5YjV2ZmFxZHFidjZlbnJvb2ZvMHhnMzV4bnFlY3Y1bSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/uGs3nvw76BfzPWnSv6/giphy.gif">
+      <div class="meme-fallback">🙏</div>
+    </div>
+    <p class="reaction-text">Okay, since I'm in a good mood, I give you one LAST chance to cover your embarassment...</p>
+    <button class="btn btn-next" type="button" data-next="q16">Next</button>
+  </div>
+
+  <!-- Scene 16: Question 6 (the "are you sure?" loop — main question) -->
+  <div class="scene" id="q16" data-emojis="👑,😼,🔥">
+    <div class="meme-visual compact">
+      <img class="meme-gif" alt="Gatal final boss meme" loading="lazy"
+        src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGlkem9wY2QzMnN6anNmNHM3cnRxbjY2ZncxbXFvZXowMWJwOHJidyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/A0Zt7yuDULiy4ofmVD/giphy.gif">
+      <div class="meme-fallback">👑</div>
+    </div>
+    <h1 class="title">Do we have the agreement that you are GATAL final boss?</h1>
+    <div class="button-row stack-buttons">
+      <button class="btn btn-primary" type="button" data-next="r17">Yes, I am gatal!</button>
+      <button class="btn btn-secondary" type="button" data-next="q16b">No, I'm not gatal, you are!</button>
+    </div>
+  </div>
+
+  <!-- Scene 16b: "are you sure?" loop, confirmation 1 — "yes" (she's sure) digs deeper, "no" concedes -->
+  <div class="scene" id="q16b" data-emojis="🤔,😐,🙄">
+    <h1 class="title">Are you sure?</h1>
+    <div class="button-row">
+      <button class="btn btn-primary" type="button" data-next="q16c">Yes</button>
+      <button class="btn btn-secondary" type="button" data-next="r17">No</button>
+    </div>
+  </div>
+
+  <!-- Scene 16c: "are you sure?" loop, confirmation 2 -->
+  <div class="scene" id="q16c" data-emojis="🧐,😤,❗">
+    <h1 class="title">Are you 100% sure?</h1>
+    <div class="button-row">
+      <button class="btn btn-primary" type="button" data-next="q16d">Yes</button>
+      <button class="btn btn-secondary" type="button" data-next="r17">No</button>
+    </div>
+  </div>
+
+  <!-- Scene 16d: "are you sure?" loop, confirmation 3 — 6s countdown + instant bait-and-switch on "yes" -->
+  <div class="scene" id="q16d" data-emojis="😳,🙃,🎯">
+    <h1 class="title">Are you sure you aren't lying to me...</h1>
+    <p class="countdown-text" id="q16dCountdownText">If you don't tap <strong>Yes</strong> in <span id="q16dCountdownNum">6</span>s, I will take this as you are GATAL 😼</p>
+    <div class="button-row" id="q16dRow">
+      <button class="btn btn-primary" type="button" id="q16dBtnA">Yes</button>
+      <button class="btn btn-secondary" type="button" id="q16dBtnB">No</button>
+    </div>
+  </div>
+
+  <!-- Scene 17: Reaction -->
+  <div class="scene" id="r17" data-emojis="😹,🎉,👑">
+    <div class="meme-visual">
+      <img class="meme-gif" alt="We agreed meme" loading="lazy"
+        src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3MncyMmpuMDNlaDlnejZxM3h5dzQ2Y2V2dmN4ajdidzJlZXR5eGQwaCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/AjKQtSZ9RxkUAe4yMp/giphy.gif">
+      <div class="meme-fallback">😹</div>
+    </div>
+    <p class="reaction-text">WHATTTTT so we agreeeedd! Asyikin is GATAL...</p>
+    <button class="btn btn-next" type="button" data-next="r18">Next</button>
+  </div>
+
+  <!-- Scene 18: Reaction -->
+  <div class="scene" id="r18" data-emojis="🏆,😂,👑">
+    <div class="meme-visual">
+      <img class="meme-gif" alt="I win this fight meme" loading="lazy"
+        src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3am9jcThob3pyOTNha3Q3emMwZXZjdXR2d3dvMm05NjRhdHBidW1rYyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Tl634aFbnGvkwSEGQT/giphy.gif">
+      <div class="meme-fallback">🏆</div>
+    </div>
+    <p class="reaction-text">Wow I win this gatal fights... WOWWW, Asyikin lost! Hehe</p>
     <button class="btn btn-next" type="button" data-next="r12">Next</button>
   </div>
 
-  <!-- Scene 12: Reaction -->
+  <!-- Scene 19: Reaction -->
   <div class="scene" id="r12" data-emojis="😈,😏,✅">
     <div class="meme-visual">
       <img class="meme-gif" alt="Devilishly happy meme" loading="lazy"
@@ -589,6 +785,14 @@
       </div>
       <div class="summary-item">
         <span class="summary-q">Q3: Can Rashdan keep bringing up the missed interview until Grandma Ashy?</span>
+        <span class="summary-a">Answered: YES!</span>
+      </div>
+      <div class="summary-item">
+        <span class="summary-q">Q4: Will Asyikin share her screen time whenever Rashdan asks?</span>
+        <span class="summary-a">Answered: YES!</span>
+      </div>
+      <div class="summary-item">
+        <span class="summary-q">Q5: Is Asyikin the GATAL final boss?</span>
         <span class="summary-a">Answered: YES!</span>
       </div>
     </div>
@@ -650,6 +854,8 @@
       q9Gif.src = Q9_ORIGINAL_GIF;
       var q9Fallback = q9Gif.nextElementSibling;
       if (q9Fallback) q9Fallback.style.display = 'none';
+      resetShrinkButtons();
+      resetQ16d();
     }
 
     current.classList.remove('active');
@@ -658,6 +864,10 @@
 
     if (targetId === 'q2') {
       requestAnimationFrame(function () { updateEyes(); });
+    }
+
+    if (targetId === 'q16d') {
+      startQ16dCountdown();
     }
   }
 
@@ -912,6 +1122,133 @@
       setTimeout(function () { goTo('r10'); }, 3000);
     }, 1200);
   });
+
+  // ================= Shrinking button (scene 12) =================
+  // Every tap on "No" shrinks it 20% and grows "Yes" 20% (compounding), and
+  // shakes "No" to signal the tap didn't count. Only "Yes" can advance.
+  var shrinkNoBtn = document.getElementById('shrinkNoBtn');
+  var shrinkYesBtn = document.getElementById('shrinkYesBtn');
+  var shrinkStep = 0;
+  var SHRINK_MAX_STEPS = 9;
+  var SHRINK_MIN_SCALE = 0.15;
+  var SHRINK_MAX_SCALE = 2.8;
+
+  function applyShrinkScale() {
+    var noScale = Math.max(SHRINK_MIN_SCALE, Math.pow(0.8, shrinkStep));
+    var yesScale = Math.min(SHRINK_MAX_SCALE, Math.pow(1.2, shrinkStep));
+    shrinkNoBtn.style.transform = 'scale(' + noScale.toFixed(3) + ')';
+    shrinkYesBtn.style.transform = 'scale(' + yesScale.toFixed(3) + ')';
+  }
+
+  function resetShrinkButtons() {
+    shrinkStep = 0;
+    shrinkNoBtn.style.transform = '';
+    shrinkYesBtn.style.transform = '';
+    shrinkNoBtn.classList.remove('shake-reject');
+  }
+
+  shrinkNoBtn.addEventListener('click', function (evt) {
+    evt.preventDefault();
+    if (shrinkStep < SHRINK_MAX_STEPS) shrinkStep++;
+    applyShrinkScale();
+    shrinkNoBtn.classList.remove('shake-reject');
+    // eslint-disable-next-line no-unused-expressions
+    shrinkNoBtn.offsetWidth; // force reflow so the shake animation restarts every tap
+    shrinkNoBtn.classList.add('shake-reject');
+  });
+
+  // ================= Scene 16d: countdown + instant bait-and-switch =================
+  // Whichever button currently reads "Yes" springs a trap the instant it's
+  // pressed: it swaps text/color with "No" before the tap completes, so the
+  // click always lands on "No". A 6s countdown forces the same outcome if she
+  // never taps at all. Either way: bounce (if a button was tapped) -> a 3s
+  // full-screen ragebait gif -> smooth handoff to the next scene.
+  var gatalOverlay = document.getElementById('gatalOverlay');
+  var q16dBtnA = document.getElementById('q16dBtnA');
+  var q16dBtnB = document.getElementById('q16dBtnB');
+  var q16dCountdownText = document.getElementById('q16dCountdownText');
+  var q16dCountdownNum = document.getElementById('q16dCountdownNum');
+  var q16dInterval = null;
+  var q16dResolved = false;
+  var Q16D_SECONDS = 6;
+
+  function q16dIsYes(btn) { return btn.classList.contains('btn-primary'); }
+
+  function swapQ16dButtons() {
+    var aText = q16dBtnA.textContent;
+    var bText = q16dBtnB.textContent;
+    q16dBtnA.textContent = bText;
+    q16dBtnB.textContent = aText;
+    q16dBtnA.classList.toggle('btn-primary');
+    q16dBtnA.classList.toggle('btn-secondary');
+    q16dBtnB.classList.toggle('btn-primary');
+    q16dBtnB.classList.toggle('btn-secondary');
+  }
+
+  function onQ16dPressStart(evt) {
+    if (q16dResolved) return;
+    if (q16dIsYes(evt.currentTarget)) swapQ16dButtons();
+  }
+
+  function showGatalOverlay() {
+    gatalOverlay.classList.add('show');
+    setTimeout(function () {
+      gatalOverlay.classList.remove('show');
+      setTimeout(function () { goTo('r17'); }, 400);
+    }, 3000);
+  }
+
+  function resolveQ16d(clickedBtn) {
+    if (q16dResolved) return;
+    q16dResolved = true;
+    clearInterval(q16dInterval);
+    if (clickedBtn) {
+      clickedBtn.classList.add('bounce-rage');
+      setTimeout(function () {
+        clickedBtn.classList.remove('bounce-rage');
+        showGatalOverlay();
+      }, 1000);
+    } else {
+      showGatalOverlay();
+    }
+  }
+
+  function onQ16dClick(evt) {
+    evt.preventDefault();
+    resolveQ16d(evt.currentTarget);
+  }
+
+  [q16dBtnA, q16dBtnB].forEach(function (btn) {
+    btn.addEventListener('pointerdown', onQ16dPressStart);
+    btn.addEventListener('touchstart', onQ16dPressStart, { passive: true });
+    btn.addEventListener('click', onQ16dClick);
+  });
+
+  function resetQ16d() {
+    clearInterval(q16dInterval);
+    q16dResolved = false;
+    gatalOverlay.classList.remove('show');
+    q16dCountdownText.classList.remove('urgent');
+    q16dBtnA.textContent = 'Yes';
+    q16dBtnA.className = 'btn btn-primary';
+    q16dBtnB.textContent = 'No';
+    q16dBtnB.className = 'btn btn-secondary';
+  }
+
+  function startQ16dCountdown() {
+    resetQ16d();
+    var remaining = Q16D_SECONDS;
+    q16dCountdownNum.textContent = remaining;
+    q16dInterval = setInterval(function () {
+      remaining--;
+      q16dCountdownNum.textContent = Math.max(remaining, 0);
+      if (remaining <= 2) q16dCountdownText.classList.add('urgent');
+      if (remaining <= 0) {
+        clearInterval(q16dInterval);
+        resolveQ16d(null);
+      }
+    }, 1000);
+  }
 
   // initial shower for the first scene
   startShower(poolFor(document.getElementById('q1')));
