@@ -259,7 +259,7 @@
     100% { transform: rotate(-42deg) translate(72%,-88%) scale(0.6); opacity: 0; }
   }
 
-  .sticker-reveal.bounce-rage {
+  .bounce-rage {
     animation: rageBounce 0.5s ease-in-out infinite;
   }
 
@@ -641,7 +641,7 @@
         src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3Z3lsNnlqanVuMjBkN3pzNms1a2k1b2hvdWM2M2ptb2swZXlva3l4MSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/qiMbLh4WHEZyw/giphy.gif">
       <div class="meme-fallback">😬</div>
     </div>
-    <p class="reaction-text">OMGG Asyikinnn I give you one more chance to recover your dumbness</p>
+    <p class="reaction-text">Hehe Asyikinnn, I'll give you one more chance...</p>
     <button class="btn btn-next" type="button" data-next="q12">Next</button>
   </div>
 
@@ -1194,7 +1194,8 @@
     gatalOverlay.classList.add('show');
     setTimeout(function () {
       gatalOverlay.classList.remove('show');
-      setTimeout(function () { goTo('r17'); }, 400);
+      // 400ms for the fade-out transition to finish, then 1s more to let it settle
+      setTimeout(function () { goTo('r17'); }, 400 + 1000);
     }, 3000);
   }
 
@@ -1207,7 +1208,7 @@
       setTimeout(function () {
         clickedBtn.classList.remove('bounce-rage');
         showGatalOverlay();
-      }, 1000);
+      }, 2350);
     } else {
       showGatalOverlay();
     }
