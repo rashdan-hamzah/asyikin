@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
-<title>Did you snore? 😼</title>
+<title>ASYIKIN</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800;900&family=Nunito:wght@400;600;700;800&display=swap');
 
@@ -181,6 +181,65 @@
     max-width: 320px;
   }
   .stack-buttons .btn { width: 100%; }
+
+  .btn-secondary {
+    background: linear-gradient(135deg, var(--no-1), var(--no-2));
+    color: #5c1330;
+    flex: 1;
+    min-width: 110px;
+  }
+
+  /* ---------- Sticker-peel "no" button (scene 9) ---------- */
+  .sticker-wrap {
+    position: relative;
+    width: 100%;
+  }
+
+  .sticker-reveal {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, var(--yes-1), var(--yes-2));
+    color: #073b2e;
+    font-family: 'Poppins', 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: clamp(0.95rem, 4.4vw, 1.15rem);
+    box-shadow: var(--shadow);
+  }
+
+  .sticker-face {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    background: linear-gradient(135deg, var(--no-1), var(--no-2));
+    color: #5c1330;
+    transform-origin: 80% 20%;
+  }
+
+  .sticker-face.peeling {
+    animation: peelOff 1.2s cubic-bezier(.4,0,.2,1) forwards;
+    pointer-events: none;
+  }
+
+  @keyframes peelOff {
+    0%   { transform: rotate(0deg) translate(0,0) scale(1); opacity: 1; }
+    60%  { transform: rotate(-18deg) translate(30%,-35%) scale(0.92); opacity: 1; }
+    100% { transform: rotate(-42deg) translate(72%,-88%) scale(0.6); opacity: 0; }
+  }
+
+  .sticker-reveal.bounce-rage {
+    animation: rageBounce 0.5s ease-in-out infinite;
+  }
+
+  @keyframes rageBounce {
+    0%, 100% { transform: translateY(0) scale(1) rotate(0deg); }
+    25%  { transform: translateY(-10px) scale(1.08) rotate(-4deg); }
+    50%  { transform: translateY(0) scale(0.96) rotate(3deg); }
+    75%  { transform: translateY(-6px) scale(1.05) rotate(-2deg); }
+  }
 
   /* ---------- Iris-tracking eyes overlaid on the scene 6 cat gif ---------- */
   .cat-eye {
@@ -424,11 +483,91 @@
       <div class="meme-fallback">🙈</div>
     </div>
     <p class="reaction-text">Hehehe, aww, I know I know, you dont need to point it out... you may go neow</p>
+    <button class="btn btn-next" type="button" data-next="q8">Next</button>
+  </div>
+
+  <!-- Scene 8: Question 3 (ready check) -->
+  <div class="scene" id="q8" data-emojis="🙏,😅,🤞">
+    <div class="meme-visual compact">
+      <img class="meme-gif" alt="Are you ready meme" loading="lazy"
+        src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3YWpzYmowY2lzdTE3am1mbmFxcHRlZ2V5czl0YXJ0MXc4a2V0MTZkciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/pGJeJRnL2cNI7ufh3L/giphy.gif">
+      <div class="meme-fallback">🙏</div>
+    </div>
+    <h1 class="title">wait I feel bad for you, I will give you free will for the next question, you ready?</h1>
+    <div class="button-row">
+      <button class="btn btn-primary" type="button" data-next="q9">Yes</button>
+      <button class="btn btn-secondary" type="button" data-next="r8b">No</button>
+    </div>
+  </div>
+
+  <!-- Scene 8.5: Snail tease -->
+  <div class="scene" id="r8b" data-emojis="🐌,⏳,😆">
+    <div class="meme-visual">
+      <img class="meme-gif" alt="Snail slow meme" loading="lazy"
+        src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMWZiNHZiYTJyNm03emo0YmExbjByb2doMnlyZjZ6Z3ZvY3BrcmpiNiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/KsMT02cXvy0AN7j4Md/giphy.gif">
+      <div class="meme-fallback">🐌</div>
+    </div>
+    <p class="reaction-text">whenever you ready... ish snail</p>
+    <button class="btn btn-next" type="button" data-next="q9">sorry I'm a snail, I'm ready</button>
+  </div>
+
+  <!-- Scene 9: Question 4 (grandma ashy — "no" is secretly "yes") -->
+  <div class="scene" id="q9" data-emojis="😏,🎭,👵">
+    <div class="meme-visual compact">
+      <img class="meme-gif" alt="Smug teasing meme" loading="lazy" id="q9Gif"
+        src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExczd2YnpucTBoZThqcHZzN2J1ZXBnMDgxaGMwbHY2enhubWxpM2JnaCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/aCSURh6OnUyXdOuYcq/giphy.gif">
+      <div class="meme-fallback">😏</div>
+    </div>
+    <h1 class="title">Can I keep bringing up that you missed the interview until you become Grandma Ashy?</h1>
+    <div class="button-row stack-buttons">
+      <button class="btn btn-primary" type="button" data-next="r10">(yes)</button>
+      <div class="sticker-wrap">
+        <span class="sticker-reveal" id="q9StickerReveal" aria-hidden="true">(yes)</span>
+        <button class="btn sticker-face" type="button" id="fakeNoBtn">(no)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scene 10: Reaction -->
+  <div class="scene" id="r10" data-emojis="👵,✅,😌">
+    <div class="meme-visual">
+      <img class="meme-gif" alt="Alright grandma meme" loading="lazy"
+        src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExczd2YnpucTBoZThqcHZzN2J1ZXBnMDgxaGMwbHY2enhubWxpM2JnaCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/y66cMvUGoX4qPAcKb8/giphy.gif">
+      <div class="meme-fallback">👵</div>
+    </div>
+    <p class="reaction-text">Alrightieee I will keep bringing it up as you wish Grandma Ashy :)</p>
+    <button class="btn btn-next" type="button" data-next="r11">Next</button>
+  </div>
+
+  <!-- Scene 11: Reaction -->
+  <div class="scene" id="r11" data-emojis="🤣,💀,😂">
+    <div class="meme-visual">
+      <img class="meme-gif" alt="Gotcha laughing meme" loading="lazy"
+        src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExczd2YnpucTBoZThqcHZzN2J1ZXBnMDgxaGMwbHY2enhubWxpM2JnaCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/0SVAVxeJsnJ1WRMIPX/giphy.gif">
+      <div class="meme-fallback">🤣</div>
+    </div>
+    <p class="reaction-text">Wait, I just got you 3 times in a row! OMGGG you dumba!</p>
+    <button class="btn btn-next" type="button" data-next="r12">Next</button>
+  </div>
+
+  <!-- Scene 12: Reaction -->
+  <div class="scene" id="r12" data-emojis="😈,😏,✅">
+    <div class="meme-visual">
+      <img class="meme-gif" alt="Devilishly happy meme" loading="lazy"
+        src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOWFmbGFvbmE4anhlYm81cTB4MDRxenFjeG1ocWRtNXZuZm9mbHJyNiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/ITAKo27WnL7ig/giphy.gif">
+      <div class="meme-fallback">😈</div>
+    </div>
+    <p class="reaction-text">I'm truly happy neow, I allow you to go neow for real hehe 😈</p>
     <button class="btn btn-next" type="button" data-next="summary">See Summary</button>
   </div>
 
-  <!-- Scene 8: Summary -->
+  <!-- Scene 13: Summary -->
   <div class="scene" id="summary" data-emojis="🎉,✨,🥳">
+    <div class="meme-visual compact">
+      <img class="meme-gif" alt="Celebration summary meme" loading="lazy"
+        src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaHhvOHg1M2htYzdiMGZ3eTlzMHR0dGYxc3NteWxuOWl4NHpvY2tmYSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/U8WkP83KzUPBxF8K0o/giphy.gif">
+      <div class="meme-fallback">📋</div>
+    </div>
     <h1 class="title">Summary of Your Answers 📋</h1>
     <div class="summary-card">
       <div class="summary-item">
@@ -438,6 +577,10 @@
       <div class="summary-item">
         <span class="summary-q">Q2: Was Rashdan scared at the ghost house?</span>
         <span class="summary-a">Answered: Nope! Rashdan was being protective, Asyikin felt safe!</span>
+      </div>
+      <div class="summary-item">
+        <span class="summary-q">Q3: Can Rashdan keep bringing up the missed interview until Grandma Ashy?</span>
+        <span class="summary-a">Answered: YES! (even the "no" was secretly a yes 😏)</span>
       </div>
     </div>
     <button class="btn btn-replay" type="button" data-next="q1">Replay</button>
@@ -492,6 +635,12 @@
     if (targetId === 'q1') {
       resetEvasive(noBtn1);
       resetEvasive(scaredyBtn);
+      fakeNoBtn.classList.remove('peeling');
+      q9StickerReveal.classList.remove('bounce-rage');
+      q9Gif.style.display = '';
+      q9Gif.src = Q9_ORIGINAL_GIF;
+      var q9Fallback = q9Gif.nextElementSibling;
+      if (q9Fallback) q9Fallback.style.display = 'none';
     }
 
     current.classList.remove('active');
@@ -732,6 +881,28 @@
     pointPupil(eyeAnchorL, pupilL, targetX, targetY);
     pointPupil(eyeAnchorR, pupilR, targetX, targetY);
   }
+
+  // ================= Sticker-peel "no" button (scene 9) =================
+  // Looks clickable and says "(no)" — but it's a sticker stuck on top of the
+  // real "(yes)" button underneath. Any tap peels it off (1.2s) and reveals
+  // the truth, then the gif swaps to a ragebait laugh and the reveal bounces
+  // tauntingly before moving on.
+  var fakeNoBtn = document.getElementById('fakeNoBtn');
+  var q9Gif = document.getElementById('q9Gif');
+  var q9StickerReveal = document.getElementById('q9StickerReveal');
+  var Q9_ORIGINAL_GIF = q9Gif.src;
+  var Q9_RAGE_GIF = 'https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3a3ZiMjQ2M3MzdzBjYW9kdGlyNTB4eDRweDFocnlxZWkwdjRpeTl5dyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/UuzwffmvtBNGjYyEUe/giphy.gif';
+
+  fakeNoBtn.addEventListener('click', function (evt) {
+    evt.preventDefault();
+    if (fakeNoBtn.classList.contains('peeling')) return;
+    fakeNoBtn.classList.add('peeling');
+    setTimeout(function () {
+      q9Gif.src = Q9_RAGE_GIF;
+      q9StickerReveal.classList.add('bounce-rage');
+      setTimeout(function () { goTo('r10'); }, 3000);
+    }, 1200);
+  });
 
   // initial shower for the first scene
   startShower(poolFor(document.getElementById('q1')));
